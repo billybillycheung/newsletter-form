@@ -1,121 +1,145 @@
-  <!-- Newsletter Form -->
-<style>
-  .newsletter-box {
-    font-family: "PP Nikkei Maru Regular", "sans-serif";
-    max-width: 800px;
-    margin: 40px auto;
-    background: #fff;
-    color: rgba(0, 0, 0, 0.85);
-    padding: 2em;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newsletter Signup</title>
 
-  .newsletter-box h2 {
-    margin-bottom: 1em;
-    font-size: 1.5em;
-    text-align: center;
-  }
+  <!-- Custom Font: PPNikkeiMaru-Regular -->
+  <style>
+    @font-face {
+      font-family: 'PPNikkeiMaru';
+      src: url('https://freight.cargo.site/m/D2361668739318309632944015578460/PPNikkeiMaru-Regular.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
 
-  .newsletter-box label {
-    display: block;
-    margin: 1em 0 0.3em;
-    font-weight: bold;
-  }
+    body {
+      font-family: 'PPNikkeiMaru', sans-serif;
+      background-color: #f7f7f7;
+      color: #222;
+      margin: 0;
+      padding: 2rem;
+    }
 
-  .newsletter-box input {
-    width: 100%;
-    padding: 0.7em;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
+    .form-wrapper {
+      max-width: 500px;
+      margin: 5vh auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    }
 
-  .newsletter-box button {
-    margin-top: 1.5em;
-    background: rgba(0, 0, 0, 0.85);
-    color: #fff;
-    border: none;
-    padding: 0.8em 1.2em;
-    border-radius: 6px;
-    font-size: 1em;
-    cursor: pointer;
-    width: 100%;
-  }
+    h2 {
+      margin-bottom: 1rem;
+      font-weight: normal;
+    }
 
-  .newsletter-box button:hover {
-    background: #333;
-  }
+    label {
+      display: block;
+      margin: 0.75rem 0 0.25rem;
+      font-size: 0.95rem;
+    }
 
-  .newsletter-box .message {
-    margin-top: 1em;
-    font-size: 0.95em;
-    text-align: center;
-  }
-</style>
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: inherit;
+    }
 
-<div class="newsletter-box">
-  <form id="newsletterForm">
-    <label for="forename">Forename *</label>
-    <input type="text" name="forename" required="">
+    button {
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #111;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+    }
 
-    <label for="surname">Surname *</label>
-    <input type="text" name="surname" required="">
+    button:hover {
+      background-color: #333;
+    }
+
+    .success, .error {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+
+  <!-- reCAPTCHA v3 -->
+  <script src="https://www.google.com/recaptcha/api.js?render=6LfhzVcrAAAAAMC6-9d1oR0UcZU2bJ1QK9D2RhkS"></script>
+</head>
+<body>
+
+  <div class="form-wrapper">
+    <h2>Subscribe to Our Newsletter</h2>
+    <form id="newsletter-form">
+      <label for="forename">Forename *</label>
+      <input type="text" id="forename" name="forename" required>
+
+      <label for="surname">Surname *</label>
+      <input type="text" id="surname" name="surname" required>
 <br>
-    <label for="company">Company *</label>
-    <input type="text" name="company" required="">
+      <label for="company">Company *</label>
+      <input type="text" id="company" name="company" required>
+
+      <label for="title">Job Title *</label>
+      <input type="text" id="title" name="title" required>
 <br>
-    <label for="jobTitle">Job Title *</label>
-    <input type="text" name="jobTitle" required="">
-<br>
-    <label for="email">Email Address *</label>
-    <input type="email" name="email" required="">
+      <label for="email">Email Address *</label>
+      <input type="email" id="email" name="email" required>
 <br><br>
-    <button type="submit">Subscribe</button>
-    <div class="message" id="formMessage"></div>
-  </form>
-</div>
+      <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+      <button type="submit">Subscribe</button>
+      <div class="success" style="display:none;">Thank you! Your submission has been received.</div>
+      <div class="error" style="display:none;">There was an error. Please try again.</div>
+    </form>
+  </div>
 
-<script src="https://www.google.com/recaptcha/api.js?render=6LfhzVcrAAAAAMC6-9d1oR0UcZU2bJ1QK9D2RhkS"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("newsletterForm");
-    const message = document.getElementById("formMessage");
+  <script>
+    document.getElementById('newsletter-form').addEventListener('submit', function (e) {
+      e.preventDefault();
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
+      grecaptcha.ready(function () {
+        grecaptcha.execute('6LfhzVcrAAAAAMC6-9d1oR0UcZU2bJ1QK9D2RhkS', { action: 'submit' }).then(function (token) {
+          document.getElementById('g-recaptcha-response').value = token;
 
-      grecaptcha.ready(function () {
-        grecaptcha.execute('6LfhzVcrAAAAAMC6-9d1oR0UcZU2bJ1QK9D2RhkS', { action: 'submit' }).then(function (token) {
-          fetch("https://script.google.com/macros/s/AKfycbzCAMA0PRtLR9j_sISJpOpjnTwR96EpDVROS6sBriqG7numsjSHCpSmRxa3avLM_FBl/exec", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              forename: form.forename.value.trim(),
-              surname: form.surname.value.trim(),
-              company: form.company.value.trim(),
-              jobTitle: form.jobTitle.value.trim(),
-              email: form.email.value.trim(),
-              recaptchaToken: token
-            })
-          })
-          .then(res => res.json())
-          .then(res => {
-            if (res.result === "success") {
-              message.style.color = "green";
-              message.textContent = "Thanks for subscribing!";
-              form.reset();
-            } else {
-              message.style.color = "red";
-              message.textContent = "Something went wrong.";
-            }
-          })
-          .catch(() => {
-            message.style.color = "red";
-            message.textContent = "Submission failed. Please try again.";
-          });
-        });
-      });
-    });
-  });
-</script>
+          const form = e.target;
+          const data = new FormData(form);
+
+          fetch('https://script.google.com/macros/s/AKfycbzCAMA0PRtLR9j_sISJpOpjnTwR96EpDVROS6sBriqG7numsjSHCpSmRxa3avLM_FBl/exec', {
+            method: 'POST',
+            body: data
+          }).then(response => {
+            if (response.ok) {
+              form.reset();
+              form.querySelector('.success').style.display = 'block';
+              form.querySelector('.error').style.display = 'none';
+            } else {
+              throw new Error('Network response was not ok.');
+            }
+          }).catch(() => {
+            form.querySelector('.success').style.display = 'none';
+            form.querySelector('.error').style.display = 'block';
+          });
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
