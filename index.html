@@ -24,16 +24,22 @@
   }
 
   .form-wrapper {
-    max-width: 600px;
-    height: 100vh;
-    margin: 0 auto;
-    padding: 5vh 2rem;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    overflow-y: auto;
-  }
+  max-width: 600px;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 5vh 2rem;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* Internet Explorer and Edge */
+}
+
+.form-wrapper::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Opera */
+}
 
   h2 {
     font-weight: normal;
