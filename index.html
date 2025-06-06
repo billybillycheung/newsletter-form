@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Newsletter Signup</title>
 
   <!-- Custom Font: PPNikkeiMaru-Regular -->
   <style>
@@ -16,8 +15,7 @@
 
     body {
       font-family: 'PPNikkeiMaru', sans-serif;
-      background-color: #f7f7f7;
-      color: #222;
+      color: rgba(0, 0, 0, 0.85);
       margin: 0;
       padding: 2rem;
     }
@@ -25,7 +23,7 @@
     .form-wrapper {
       max-width: 500px;
       margin: 5vh auto;
-      padding: 2rem;
+      padding: 2rem 2rem 2rem 2rem;
       background: #fff;
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(0,0,0,0.05);
@@ -46,15 +44,15 @@
     input[type="email"] {
       width: 100%;
       padding: 0.75rem;
-      border: 1px solid #ccc;
+      border: 1px solid rgba(0, 0, 0, 0.85);
       border-radius: 6px;
       font-family: inherit;
     }
 
     button {
       margin-top: 1.5rem;
-      padding: 0.75rem 1.5rem;
-      background-color: #111;
+      padding: 0.5rem 0.5rem;
+      background-color: rgba(0, 0, 0, 0.85);
       color: #fff;
       border: none;
       border-radius: 6px;
@@ -90,13 +88,13 @@
     <form id="newsletter-form">
       <label for="forename">Forename *</label>
       <input type="text" id="forename" name="forename" required>
-
+<br>
       <label for="surname">Surname *</label>
       <input type="text" id="surname" name="surname" required>
 <br>
       <label for="company">Company *</label>
       <input type="text" id="company" name="company" required>
-
+<br>
       <label for="title">Job Title *</label>
       <input type="text" id="title" name="title" required>
 <br>
