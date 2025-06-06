@@ -1,0 +1,121 @@
+  <!-- Newsletter Form -->
+<style>
+  .newsletter-box {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #fff;
+    color: rgba(0, 0, 0, 0.85);
+    padding: 2em;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .newsletter-box h2 {
+    margin-bottom: 1em;
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+  .newsletter-box label {
+    display: block;
+    margin: 1em 0 0.3em;
+    font-weight: bold;
+  }
+
+  .newsletter-box input {
+    width: 100%;
+    padding: 0.7em;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .newsletter-box button {
+    margin-top: 1.5em;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    border: none;
+    padding: 0.8em 1.2em;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .newsletter-box button:hover {
+    background: #333;
+  }
+
+  .newsletter-box .message {
+    margin-top: 1em;
+    font-size: 0.95em;
+    text-align: center;
+  }
+</style>
+
+<div class="newsletter-box">
+  <h2>Subscribe to our Newsletter</h2>
+  <form id="newsletterForm">
+    <label for="forename">Forename *</label>
+    <input type="text" name="forename" required="">
+
+    <label for="surname">Surname *</label>
+    <input type="text" name="surname" required="">
+<br>
+    <label for="company">Company *</label>
+    <input type="text" name="company" required="">
+<br>
+    <label for="jobTitle">Job Title *</label>
+    <input type="text" name="jobTitle" required="">
+<br>
+    <label for="email">Email Address *</label>
+    <input type="email" name="email" required="">
+<br>
+    <button type="submit">Subscribe</button>
+    <div class="message" id="formMessage"></div>
+  </form>
+</div>
+
+<script src="https://www.google.com/recaptcha/api.js?render=6LfhzVcrAAAAAMC6-9d1oR0UcZU2bJ1QK9D2RhkS"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("newsletterForm");
+    const message = document.getElementById("formMessage");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      grecaptcha.ready(function () {
+        grecaptcha.execute('6LfhzVcrAAAAAMC6-9d1oR0UcZU2bJ1QK9D2RhkS', { action: 'submit' }).then(function (token) {
+          fetch("https://script.google.com/macros/s/AKfycbzCAMA0PRtLR9j_sISJpOpjnTwR96EpDVROS6sBriqG7numsjSHCpSmRxa3avLM_FBl/exec", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              forename: form.forename.value.trim(),
+              surname: form.surname.value.trim(),
+              company: form.company.value.trim(),
+              jobTitle: form.jobTitle.value.trim(),
+              email: form.email.value.trim(),
+              recaptchaToken: token
+            })
+          })
+          .then(res => res.json())
+          .then(res => {
+            if (res.result === "success") {
+              message.style.color = "green";
+              message.textContent = "Thanks for subscribing!";
+              form.reset();
+            } else {
+              message.style.color = "red";
+              message.textContent = "Something went wrong.";
+            }
+          })
+          .catch(() => {
+            message.style.color = "red";
+            message.textContent = "Submission failed. Please try again.";
+          });
+        });
+      });
+    });
+  });
+</script>
