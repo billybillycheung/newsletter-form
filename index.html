@@ -17,20 +17,16 @@
     }
 
     body {
-      min-height: 100vh;
-      display: grid;
-      align-items: center;
-      justify-content: center;
       font-family: 'PPNikkeiMaru', sans-serif;
       padding: 2rem;
-      box-sizing: border-box;
+      margin: 0;
     }
 
     form {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      max-width: 600px;
+      max-width: 100%;
     }
 
     form > input {
@@ -48,7 +44,7 @@
     }
 
     form > input[type="submit"] {
-      background: #000000d9;
+      background: #121212;
       color: white;
       cursor: pointer;
       transition: background 0.3s ease;
@@ -72,6 +68,9 @@
       color: red;
     }
   </style>
+
+  <!-- Load reCAPTCHA v3 -->
+  <script src="https://www.google.com/recaptcha/api.js?render=6LfhzVcrAAAAAMC6-9d1oR0UcZU2bJ1QK9D2RhkS"></script>
 </head>
 <body>
 
@@ -84,31 +83,42 @@
     <p class="success">Thank you for subscribing!</p>
     <p class="error">Something went wrong. Please try again.</p>
   </form>
-  
+
   <script>
+    const siteKey = '6LfhzVcrAAAAAMC6-9d1oR0UcZU2bJ1QK9D2RhkS';
+
     document.getElementById("newsletter-form").addEventListener("submit", function (e) {
       e.preventDefault();
-
-      const scriptURL = "https://script.google.com/macros/s/AKfycbymEyCAPPDZgCTHXNuYl-zL5gW_6nE-u9bZIsLytXpdTzGw9oV_SrVmgdCE98GXyM-6/exec";
       const form = e.target;
       const successMsg = form.querySelector(".success");
       const errorMsg = form.querySelector(".error");
 
-      fetch(scriptURL, { method: "POST", body: new FormData(form) })
-        .then(response => {
-          if (response.ok) {
-            successMsg.style.display = "block";
-            errorMsg.style.display = "none";
-            form.reset();
-          } else {
-            throw new Error();
-          }
-        })
-        .catch(() => {
-          successMsg.style.display = "none";
-          errorMsg.style.display = "block";
+      grecaptcha.ready(() => {
+        grecaptcha.execute(siteKey, { action: 'submit' }).then((token) => {
+          const formData = new FormData(form);
+          formData.append('g-recaptcha-response', token);
+
+          fetch("https://script.google.com/macros/s/AKfycbymEyCAPPDZgCTHXNuYl-zL5gW_6nE-u9bZIsLytXpdTzGw9oV_SrVmgdCE98GXyM-6/exec", {
+            method: "POST",
+            body: formData,
+          })
+          .then(response => {
+            if (response.ok) {
+              successMsg.style.display = "block";
+              errorMsg.style.display = "none";
+              form.reset();
+            } else {
+              throw new Error();
+            }
+          })
+          .catch(() => {
+            successMsg.style.display = "none";
+            errorMsg.style.display = "block";
+          });
         });
+      });
     });
   </script>
+
 </body>
 </html>
