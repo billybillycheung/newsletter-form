@@ -98,7 +98,7 @@
           const formData = new FormData(form);
           formData.append('g-recaptcha-response', token);
 
-          fetch("https://script.google.com/macros/s/AKfycbx6Hb9KpkDlPYL6Viu60WdxxSB4jorYcrQDyca0rEtz/dev", {
+          fetch("https://script.google.com/macros/s/AKfycbyBavqKMJZydGOC-5CmZdVgvJ9gBRkbGGiebkb58Ak7iUi4rEZpB0n6DsLm_xClcBs-Cg/exec", {
             method: "POST",
             body: formData,
           })
