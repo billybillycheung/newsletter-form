@@ -23,6 +23,22 @@
     overflow-x: hidden;
   }
 
+    html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    -ms-overflow-style: none; /* IE 10+ */
+    scrollbar-width: none;     /* Firefox */
+  }
+
 .form-wrapper {
   max-width: 700px;
   height: 100vh;
@@ -34,8 +50,6 @@
   align-items: flex-start;  /* Align content to the left */
   justify-content: flex-start; /* Align content to the top */
   overflow-y: auto;
-  scrollbar-width: none;        /* Firefox */
-  -ms-overflow-style: none;     /* IE & Edge */
 }
 
 .form-wrapper::-webkit-scrollbar {
