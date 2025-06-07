@@ -102,15 +102,17 @@
             method: "POST",
             body: formData,
           })
-          .then(response => {
-            if (response.ok) {
-              successMsg.style.display = "block";
-              errorMsg.style.display = "none";
-              form.reset();
-            } else {
-              throw new Error();
-            }
-          })
+          .then(response => response.text())
+.then(text => {
+  console.log("Response from Apps Script:", text);
+  if (text === "Success") {
+    successMsg.style.display = "block";
+    errorMsg.style.display = "none";
+    form.reset();
+  } else {
+    throw new Error(text);
+  }
+})
           .catch(() => {
             successMsg.style.display = "none";
             errorMsg.style.display = "block";
