@@ -144,7 +144,7 @@
     const email = e.parameter.email || "";
 
     // Step 3: Store data in Google Sheet (optional)
-    const sheet = SpreadsheetApp.openById("YOUR_SPREADSHEET_ID").getSheetByName("FormResponses");
+    const sheet = SpreadsheetApp.openById("1EUq25NEtScyWM0KJnVo7wwLaHKwjg7f2JLGVhOB7enQ").getSheetByName("FormResponses");
     sheet.appendRow([new Date(), name, company, jobTitle, email]);
 
     // Step 4: Respond to client
