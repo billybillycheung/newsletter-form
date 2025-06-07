@@ -118,46 +118,6 @@
         });
       });
     });
-    function doPost(e) {
-  const token = e.parameter["g-recaptcha-response"];
-  const secret = "6LfhzVcrAAAAAJLKbcLaq0Qpl1Pi5BnhNOgy7O3L"; // Replace with your actual secret key from reCAPTCHA Admin
-
-  // Step 1: Verify reCAPTCHA
-  const verificationResponse = UrlFetchApp.fetch("https://www.google.com/recaptcha/api/siteverify", {
-    method: "post",
-    payload: {
-      secret: secret,
-      response: token
-    }
-  });
-
-  const result = JSON.parse(verificationResponse.getContentText());
-
-  // Optional: Log result for debugging
-  Logger.log(result);
-
-  if (result.success && result.score >= 0.5) {
-    // Step 2: Extract form data
-    const name = e.parameter.name || "";
-    const company = e.parameter.company || "";
-    const jobTitle = e.parameter.job_title || "";
-    const email = e.parameter.email || "";
-
-    // Step 3: Store data in Google Sheet (optional)
-    const sheet = SpreadsheetApp.openById("1EUq25NEtScyWM0KJnVo7wwLaHKwjg7f2JLGVhOB7enQ").getSheetByName("FormResponses");
-    sheet.appendRow([new Date(), name, company, jobTitle, email]);
-
-    // Step 4: Respond to client
-    return ContentService
-      .createTextOutput("Success")
-      .setMimeType(ContentService.MimeType.TEXT);
-  } else {
-    // reCAPTCHA failed or bot suspected
-    return ContentService
-      .createTextOutput("reCAPTCHA failed or score too low")
-      .setMimeType(ContentService.MimeType.TEXT);
-  }
-}
   </script>
 
 </body>
