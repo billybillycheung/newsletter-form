@@ -105,11 +105,12 @@
           .then(response => response.text())
 .then(text => {
   console.log("Response from Apps Script:", text);
-  if (text === "Success") {
+  if (text.trim() === "Success") {
     successMsg.style.display = "block";
     errorMsg.style.display = "none";
     form.reset();
   } else {
+    console.error("Unexpected response:", text);
     throw new Error(text);
   }
 })
