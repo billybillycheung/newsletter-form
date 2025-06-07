@@ -16,58 +16,80 @@
       font-display: swap;
     }
 
-    @use postcss-preset-env {
-  stage: 0
-}
+    body {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      justify-content: center;
+      font-family: 'PPNikkeiMaru', sans-serif;
+      padding: 2rem;
+      box-sizing: border-box;
+    }
 
-body {
-  min-height: 100vh;
-  display: grid;
-  align-items: center;
-}
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      max-width: 600px;
+    }
 
-form {
-  display: flex;
-  flex-wrap: wrap;
-  
-  & > input {
-    flex: 1 1 10ch;
-    margin: .5rem;
-    
-    &[type="email"] {
+    form > input {
+      flex: 1 1 10ch;
+      margin: 0.25rem;
+      border: none;
+      background: hsl(0 0% 93%);
+      border-radius: 0.25rem;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+    }
+
+    form > input[type="email"] {
       flex: 3 1 30ch;
     }
-  }
-}
 
-input {
-  border: none;
-  background: hsl(0 0% 93%);
-  border-radius: .25rem;
-  padding: .75rem 1rem;
-  
-  &[type="submit"] {
-    background: hotpink;
-    color: white;
-    box-shadow: 0 .75rem .5rem -.5rem hsl(0 50% 80%);
-  }
-}
+    form > input[type="submit"] {
+      background: #000000d9;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    form > input[type="submit"]:hover {
+      background: #000000;
+    }
+
+    .success, .error {
+      display: none;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
   </style>
 </head>
 <body>
-<form>
-  <input type="text" placeholder="Name">
-  <input type="text" placeholder="Company">  
-  <input type="text" placeholder="Job Title">  
-  <input type="email" placeholder="Email Address">
-  <input type="submit" value="Subscribe">
-</form>
+
+  <form id="newsletter-form">
+    <input type="text" name="name" placeholder="Name">
+    <input type="text" name="company" placeholder="Company">  
+    <input type="text" name="job_title" placeholder="Job Title">  
+    <input type="email" name="email" placeholder="Email Address" required>
+    <input type="submit" value="Subscribe">
+    <p class="success">Thank you for subscribing!</p>
+    <p class="error">Something went wrong. Please try again.</p>
+  </form>
   
   <script>
     document.getElementById("newsletter-form").addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const scriptURL = "YOUR_GOOGLE_SCRIPT_URL";
+      const scriptURL = "https://script.google.com/macros/s/AKfycbymEyCAPPDZgCTHXNuYl-zL5gW_6nE-u9bZIsLytXpdTzGw9oV_SrVmgdCE98GXyM-6/exec";
       const form = e.target;
       const successMsg = form.querySelector(".success");
       const errorMsg = form.querySelector(".error");
