@@ -52,7 +52,7 @@
 
     form > input[type="submit"]:hover {
       background: hsl(0 0% 93%);
-      font-color: #121212;
+      color: #121212;
     }
 
     .success, .error {
@@ -80,6 +80,10 @@
     <input type="text" name="company" placeholder="Company">  
     <input type="text" name="job_title" placeholder="Job Title">  
     <input type="email" name="email" placeholder="Email Address" required>
+    
+    <!-- Honeypot field (spam prevention) -->
+    <input type="text" name="website" style="display: none;" autocomplete="off">
+
     <br>
     <input type="submit" value="Subscribe">
     <p class="success">Thank you for subscribing!</p>
@@ -105,17 +109,22 @@
             body: formData,
           })
           .then(response => response.text())
-.then(text => {
-  console.log("Response from Apps Script:", text);
-  if (text.trim() === "Success") {
-    successMsg.style.display = "block";
-    errorMsg.style.display = "none";
-    form.reset();
-  } else {
-    console.error("Unexpected response:", text);
-    throw new Error(text);
-  }
-})
+          .then(text => {
+            console.log("Response from Apps Script:", text);
+            if (text.trim() === "Success") {
+              successMsg.style.display = "block";
+              errorMsg.style.display = "none";
+              form.reset();
+
+              // Auto-hide success message
+              setTimeout(() => {
+                successMsg.style.display = "none";
+              }, 5000);
+            } else {
+              console.error("Unexpected response:", text);
+              throw new Error(text);
+            }
+          })
           .catch(() => {
             successMsg.style.display = "none";
             errorMsg.style.display = "block";
